@@ -1,0 +1,1765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cringe Processing Machine</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 24px;
+            padding: 40px;
+            max-width: 700px;
+            width: 100%;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .container:hover {
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
+        }
+
+        .disclaimer {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+            color: #4a5568;
+            padding: 15px 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            border-left: 4px solid #ff6b6b;
+            font-size: 0.9em;
+            box-shadow: 0 4px 12px rgba(255, 107, 107, 0.2);
+        }
+
+        .disclaimer strong {
+            color: #e53e3e;
+        }
+
+        .step {
+            display: none;
+            text-align: center;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        .step.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        h1 {
+            color: #2d3748;
+            margin-bottom: 30px;
+            font-size: 2.8em;
+            font-weight: 300;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        h2 {
+            color: #2d3748;
+            margin-bottom: 25px;
+            font-size: 2em;
+            font-weight: 400;
+        }
+
+        p {
+            color: #4a5568;
+            line-height: 1.7;
+            margin-bottom: 20px;
+            font-size: 1.1em;
+        }
+
+        .journey-steps {
+            display: grid;
+            gap: 20px;
+            margin: 30px 0;
+            text-align: left;
+        }
+
+        .journey-step {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 20px;
+            background: rgba(102, 126, 234, 0.05);
+            border-radius: 12px;
+            border-left: 4px solid #667eea;
+            transition: all 0.3s ease;
+            animation: slideIn 0.6s ease-out forwards;
+        }
+
+        .journey-step:nth-child(1) { animation-delay: 0.1s; }
+        .journey-step:nth-child(2) { animation-delay: 0.2s; }
+        .journey-step:nth-child(3) { animation-delay: 0.3s; }
+        .journey-step:nth-child(4) { animation-delay: 0.4s; }
+
+        .journey-step:hover {
+            background: rgba(102, 126, 234, 0.1);
+            transform: translateX(5px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+        }
+
+        .step-icon {
+            font-size: 1.5em;
+            min-width: 40px;
+        }
+
+        .step-text {
+            color: #4a5568;
+            font-size: 1em;
+            line-height: 1.5;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 150px;
+            padding: 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 16px;
+            font-family: inherit;
+            resize: vertical;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            background: white;
+        }
+
+        textarea:hover {
+            border-color: #cbd5e0;
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 10px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+        }
+
+        button:active {
+            transform: translateY(-1px);
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.2);
+        }
+
+        .primary-button {
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            box-shadow: 0 4px 15px rgba(72, 187, 120, 0.4);
+            font-size: 18px;
+            padding: 18px 36px;
+        }
+
+        .primary-button:hover {
+            box-shadow: 0 8px 25px rgba(72, 187, 120, 0.5);
+        }
+
+        .secondary-button {
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+            border: 2px solid #667eea;
+            box-shadow: none;
+        }
+
+        .secondary-button:hover {
+            background: rgba(102, 126, 234, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .breathing-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+            padding: 30px;
+            background: rgba(102, 126, 234, 0.05);
+            border-radius: 20px;
+            margin: 20px 0;
+        }
+
+        .breath-circle {
+            width: 220px;
+            height: 220px;
+            border: 4px solid #667eea;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3em;
+            font-weight: 500;
+            color: #4a5568;
+            transition: all 0.4s ease;
+            background: radial-gradient(circle, rgba(255,255,255,0.9) 0%, rgba(102,126,234,0.1) 100%);
+            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.2);
+        }
+
+        .breath-circle.inhale {
+            transform: scale(1.15);
+            background: radial-gradient(circle, rgba(102,126,234,0.2) 0%, rgba(102,126,234,0.05) 100%);
+            box-shadow: 0 12px 40px rgba(102, 126, 234, 0.3);
+        }
+
+        .breath-circle.exhale {
+            transform: scale(0.85);
+            background: radial-gradient(circle, rgba(118,75,162,0.2) 0%, rgba(118,75,162,0.05) 100%);
+            box-shadow: 0 4px 20px rgba(118, 75, 162, 0.2);
+        }
+
+        .eye-direction {
+            font-size: 1.6em;
+            color: #2d3748;
+            font-weight: 500;
+            margin: 20px 0;
+            padding: 15px 25px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 25px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .breath-counter {
+            font-size: 2.2em;
+            color: #667eea;
+            font-weight: bold;
+            margin: 20px 0;
+            text-shadow: 0 2px 4px rgba(102, 126, 234, 0.3);
+        }
+
+        .meditation-text {
+            font-style: italic;
+            color: #553c9a;
+            font-size: 1.2em;
+            line-height: 1.8;
+            margin: 20px 0;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            margin-bottom: 30px;
+            overflow: hidden;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transition: width 0.5s ease;
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+        }
+
+        .step-indicator {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+
+        .step-dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #e2e8f0;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .step-dot:hover {
+            transform: scale(1.2);
+        }
+
+        .step-dot.active {
+            background: #667eea;
+            animation: pulse 2s infinite;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.2);
+        }
+
+        .step-dot.completed {
+            background: #48bb78;
+            box-shadow: 0 0 0 3px rgba(72, 187, 120, 0.2);
+        }
+
+        .step-dot.completed::after {
+            content: '✓';
+            position: absolute;
+            top: -2px;
+            left: 2px;
+            color: white;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        .love-letter {
+            text-align: left;
+            background: rgba(102, 126, 234, 0.05);
+            padding: 25px;
+            border-radius: 15px;
+            border-left: 4px solid #667eea;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.1);
+        }
+
+        /* Enhanced Mobile Responsiveness for Mental Health App */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+                align-items: flex-start;
+                padding-top: 20px;
+            }
+
+            .container {
+                padding: 20px;
+                margin: 0;
+                min-height: calc(100vh - 40px);
+                border-radius: 16px;
+                max-width: 100%;
+            }
+
+            h1 {
+                font-size: 2.2em;
+                margin-bottom: 20px;
+                line-height: 1.2;
+            }
+
+            h2 {
+                font-size: 1.6em;
+                margin-bottom: 20px;
+            }
+
+            p {
+                font-size: 1.05em;
+                margin-bottom: 15px;
+            }
+
+            /* Larger touch targets for emotional states */
+            button {
+                padding: 18px 32px;
+                font-size: 16px;
+                margin: 8px;
+                min-height: 50px;
+                width: auto;
+                min-width: 120px;
+            }
+
+            .primary-button {
+                padding: 20px 36px;
+                font-size: 18px;
+                min-height: 56px;
+                width: 100%;
+                max-width: 320px;
+                margin: 12px auto;
+                display: block;
+            }
+
+            .secondary-button {
+                min-height: 50px;
+                padding: 16px 28px;
+            }
+
+            /* Enhanced textarea for easier mobile typing */
+            textarea {
+                min-height: 200px;
+                padding: 20px;
+                font-size: 16px; /* Prevents zoom on iOS */
+                line-height: 1.5;
+                border-radius: 12px;
+                margin-bottom: 20px;
+            }
+
+            /* Improved breathing circle */
+            .breath-circle {
+                width: 200px;
+                height: 200px;
+                font-size: 1.2em;
+            }
+
+            .breathing-container {
+                padding: 20px;
+                margin: 15px 0;
+            }
+
+            .eye-direction {
+                font-size: 1.4em;
+                padding: 12px 20px;
+                margin: 15px 0;
+            }
+
+            .breath-counter {
+                font-size: 1.8em;
+                margin: 15px 0;
+            }
+
+            /* Journey steps mobile optimization */
+            .journey-steps {
+                gap: 12px;
+                margin: 20px 0;
+            }
+
+            .journey-step {
+                padding: 16px;
+                flex-direction: column;
+                text-align: center;
+                gap: 10px;
+            }
+
+            .step-icon {
+                font-size: 2em;
+            }
+
+            .step-text {
+                font-size: 1.1em;
+                font-weight: 500;
+            }
+
+            /* Approach selector mobile */
+            .approach-selector {
+                flex-direction: column;
+                gap: 8px;
+                align-items: center;
+            }
+
+            .approach-btn {
+                width: 100%;
+                max-width: 250px;
+                padding: 14px 20px;
+                font-size: 16px;
+                margin: 4px 0;
+            }
+
+            /* Enhanced phrase customizer */
+            .phrase-customizer select {
+                padding: 16px;
+                font-size: 16px;
+                margin: 10px 0;
+                border-radius: 12px;
+            }
+
+            /* Visualization options mobile */
+            .visualization-options label {
+                padding: 16px;
+                margin: 10px 0;
+                font-size: 16px;
+                border-radius: 12px;
+            }
+
+            .visualization-options input[type="radio"] {
+                margin-right: 15px;
+                transform: scale(1.3);
+            }
+
+            /* Current phrase display */
+            #currentPhrase {
+                font-size: 1.3em;
+                padding: 20px;
+                margin: 20px 0;
+                min-height: 80px;
+                line-height: 1.4;
+            }
+
+            #vizInstructions, #bodyInstructions {
+                font-size: 1.1em;
+                padding: 20px;
+                margin: 20px 0;
+                line-height: 1.6;
+            }
+
+            /* Practice timer mobile */
+            .practice-timer {
+                padding: 20px;
+                margin: 20px 0;
+            }
+
+            #practiceTime {
+                font-size: 2.5em;
+                margin: 15px 0;
+            }
+
+            /* Love letter section */
+            .love-letter {
+                padding: 20px;
+                margin: 20px 0;
+            }
+
+            .love-letter ul {
+                margin: 15px 0;
+            }
+
+            .love-letter li {
+                padding: 10px 0;
+                font-size: 1.05em;
+                line-height: 1.5;
+            }
+
+            /* Final actions mobile */
+            .final-actions {
+                flex-direction: column;
+                align-items: center;
+                gap: 12px;
+            }
+
+            .final-actions button {
+                width: 100%;
+                max-width: 280px;
+                margin: 8px 0;
+            }
+
+            /* Step dots mobile */
+            .step-indicator {
+                gap: 10px;
+                margin-bottom: 20px;
+            }
+
+            .step-dot {
+                width: 12px;
+                height: 12px;
+            }
+
+            /* Success/validation messages mobile */
+            .success-message, .validation-message {
+                padding: 16px;
+                margin: 15px 0;
+                font-size: 15px;
+                border-radius: 12px;
+                line-height: 1.4;
+            }
+
+            /* Disclaimer mobile */
+            .disclaimer {
+                padding: 16px;
+                margin-bottom: 20px;
+                font-size: 14px;
+                line-height: 1.5;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 16px;
+                border-radius: 12px;
+            }
+
+            h1 {
+                font-size: 1.9em;
+                margin-bottom: 15px;
+            }
+
+            h2 {
+                font-size: 1.4em;
+                margin-bottom: 15px;
+            }
+
+            .breath-circle {
+                width: 170px;
+                height: 170px;
+                font-size: 1.1em;
+            }
+
+            .breathing-container {
+                padding: 15px;
+            }
+
+            .eye-direction {
+                font-size: 1.2em;
+                padding: 10px 15px;
+            }
+
+            .breath-counter {
+                font-size: 1.6em;
+            }
+
+            .journey-step {
+                padding: 14px;
+            }
+
+            .step-icon {
+                font-size: 1.8em;
+            }
+
+            button {
+                padding: 16px 24px;
+                margin: 6px;
+                min-height: 48px;
+            }
+
+            .primary-button {
+                padding: 18px 30px;
+                font-size: 17px;
+                min-height: 54px;
+            }
+
+            textarea {
+                min-height: 180px;
+                padding: 16px;
+            }
+
+            #currentPhrase {
+                font-size: 1.2em;
+                padding: 18px;
+                min-height: 70px;
+            }
+
+            #practiceTime {
+                font-size: 2.2em;
+            }
+
+            .step-indicator {
+                gap: 8px;
+            }
+
+            .step-dot {
+                width: 10px;
+                height: 10px;
+            }
+        }
+
+        /* Landscape phone orientation */
+        @media (max-width: 896px) and (orientation: landscape) and (max-height: 500px) {
+            body {
+                align-items: flex-start;
+                padding: 10px;
+            }
+
+            .container {
+                margin: 0;
+                padding: 15px;
+                min-height: calc(100vh - 20px);
+            }
+
+            .breath-circle {
+                width: 140px;
+                height: 140px;
+            }
+
+            .breathing-container {
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 1.6em;
+                margin-bottom: 10px;
+            }
+
+            h2 {
+                font-size: 1.3em;
+                margin-bottom: 10px;
+            }
+        }
+
+        /* Touch and accessibility improvements */
+        @media (hover: none) and (pointer: coarse) {
+            button:hover {
+                transform: none;
+            }
+
+            button:active {
+                transform: scale(0.98);
+                transition: transform 0.1s;
+            }
+
+            .journey-step:hover {
+                transform: none;
+            }
+
+            .reminder-card:hover {
+                transform: none;
+            }
+
+            /* Larger tap targets for mobile */
+            .approach-btn {
+                min-height: 48px;
+            }
+
+            .visualization-options label {
+                min-height: 48px;
+                display: flex;
+                align-items: center;
+            }
+        }
+
+        /* Prevent zoom on input focus for iOS */
+        @supports (-webkit-touch-callout: none) {
+            textarea, 
+            select {
+                font-size: 16px !important;
+            }
+        }
+
+        .approach-selector {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin: 25px 0;
+            flex-wrap: wrap;
+        }
+
+        .approach-btn {
+            background: rgba(102, 126, 234, 0.1);
+            color: #4a5568;
+            border: 2px solid #e2e8f0;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .approach-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.5s;
+        }
+
+        .approach-btn:hover::before {
+            left: 100%;
+        }
+
+        .approach-btn:hover {
+            background: rgba(102, 126, 234, 0.15);
+            border-color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+        }
+
+        .approach-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: #667eea;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .approach-btn.active:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+        }
+
+        .approach-content {
+            display: none;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .approach-content.active {
+            display: block;
+        }
+
+        .phrase-customizer {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+            padding: 25px;
+            border-radius: 15px;
+            margin: 25px 0;
+            border: 1px solid rgba(102, 126, 234, 0.1);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.08);
+        }
+
+        .phrase-customizer p {
+            margin-bottom: 15px;
+            font-weight: 500;
+            color: #2d3748;
+        }
+
+        .phrase-customizer select {
+            width: 100%;
+            padding: 12px 16px;
+            margin: 8px 0;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 14px;
+            background: white;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .phrase-customizer select:hover {
+            border-color: #cbd5e0;
+        }
+
+        .phrase-customizer select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .visualization-options {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+            padding: 25px;
+            border-radius: 15px;
+            margin: 25px 0;
+            border: 1px solid rgba(102, 126, 234, 0.1);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.08);
+        }
+
+        .visualization-options label {
+            display: block;
+            margin: 15px 0;
+            font-size: 15px;
+            color: #4a5568;
+            cursor: pointer;
+            padding: 12px 15px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+
+        .visualization-options label:hover {
+            background: rgba(102, 126, 234, 0.08);
+            border-color: rgba(102, 126, 234, 0.2);
+            transform: translateX(5px);
+        }
+
+        .visualization-options input[type="radio"] {
+            margin-right: 12px;
+            transform: scale(1.2);
+            accent-color: #667eea;
+        }
+
+        .practice-timer {
+            text-align: center;
+            margin: 30px 0;
+            padding: 25px;
+            background: linear-gradient(135deg, rgba(72, 187, 120, 0.05) 0%, rgba(56, 161, 105, 0.05) 100%);
+            border-radius: 15px;
+            border: 1px solid rgba(72, 187, 120, 0.2);
+            box-shadow: 0 4px 12px rgba(72, 187, 120, 0.1);
+        }
+
+        #practiceTime {
+            font-size: 2.2em;
+            color: #48bb78;
+            font-weight: bold;
+            text-shadow: 0 2px 4px rgba(72, 187, 120, 0.3);
+            margin: 10px 0;
+        }
+
+        #currentPhrase {
+            font-size: 1.4em;
+            color: #553c9a;
+            font-weight: 500;
+            line-height: 1.6;
+            padding: 25px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 12px;
+            margin: 25px 0;
+            min-height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(102, 126, 234, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        #currentPhrase:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+        }
+
+        #vizInstructions, #bodyInstructions {
+            font-size: 1.15em;
+            color: #553c9a;
+            line-height: 1.7;
+            padding: 25px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 12px;
+            margin: 25px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(102, 126, 234, 0.1);
+        }
+
+        /* Success states and feedback */
+        .success-message {
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            animation: slideIn 0.5s ease-out;
+            box-shadow: 0 4px 12px rgba(72, 187, 120, 0.3);
+        }
+
+        /* Validation messaging */
+        .validation-message {
+            background: linear-gradient(135deg, #ed8936 0%, #dd6b20 100%);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            animation: slideIn 0.5s ease-out;
+            box-shadow: 0 4px 12px rgba(237, 137, 54, 0.3);
+        }
+
+        /* Loading states */
+        .loading {
+            position: relative;
+            pointer-events: none;
+        }
+
+        .loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            margin: -10px 0 0 -10px;
+            border: 2px solid #ffffff;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Accessibility improvements */
+        button:focus,
+        textarea:focus,
+        select:focus {
+            outline: 2px solid #667eea;
+            outline-offset: 2px;
+        }
+
+        .skip-to-content {
+            position: absolute;
+            top: -40px;
+            left: 6px;
+            background: #667eea;
+            color: white;
+            padding: 8px;
+            text-decoration: none;
+            border-radius: 4px;
+            z-index: 1000;
+        }
+
+        .skip-to-content:focus {
+            top: 6px;
+        }
+
+        /* Reduced motion preferences */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* Completion page enhancements */
+        .completion-celebration {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .celebration-message {
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 20px 0;
+            box-shadow: 0 8px 25px rgba(72, 187, 120, 0.3);
+        }
+
+        .key-reminders {
+            margin: 30px 0;
+        }
+
+        .key-reminders h3 {
+            color: #2d3748;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 1.4em;
+        }
+
+        .reminder-cards {
+            display: grid;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .reminder-card {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 20px;
+            background: rgba(102, 126, 234, 0.05);
+            border-radius: 12px;
+            border-left: 4px solid #667eea;
+            transition: all 0.3s ease;
+        }
+
+        .reminder-card:hover {
+            background: rgba(102, 126, 234, 0.1);
+            transform: translateX(5px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+        }
+
+        .reminder-icon {
+            font-size: 1.8em;
+            min-width: 40px;
+        }
+
+        .reminder-text {
+            color: #4a5568;
+            font-size: 1.1em;
+            font-weight: 500;
+            line-height: 1.4;
+        }
+
+        .final-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        /* Enhanced love letter styling */
+        .love-letter ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .love-letter li {
+            padding: 8px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .love-letter li::before {
+            content: '💝';
+            position: absolute;
+            left: 0;
+            top: 8px;
+        }
+
+        /* Mobile responsiveness for new elements */
+        @media (max-width: 768px) {
+            .reminder-cards {
+                gap: 12px;
+            }
+
+            .reminder-card {
+                padding: 15px;
+            }
+
+            .final-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .final-actions button {
+                width: 100%;
+                max-width: 280px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="step-indicator">
+            <div class="step-dot active" data-step="0"></div>
+            <div class="step-dot" data-step="1"></div>
+            <div class="step-dot" data-step="2"></div>
+            <div class="step-dot" data-step="3"></div>
+            <div class="step-dot" data-step="4"></div>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-fill" style="width: 20%"></div>
+        </div>
+
+        <!-- Step 0: Introduction -->
+        <div class="step active" id="step-0">
+            <div class="disclaimer">
+                <p><strong>Important:</strong> This tool is free, open source, and the creator does not collect any data. It is not a replacement for mental health treatment.</p>
+            </div>
+            
+            <h1>Cringe Processing Machine</h1>
+            <p>Welcome to a gentle journey of self-compassion and healing. This process combines memory processing with bilateral stimulation and evidence-based self-compassion practices.</p>
+            <p><strong>What you'll do:</strong></p>
+            <div class="journey-steps">
+                <div class="journey-step">
+                    <div class="step-icon">✍️</div>
+                    <div class="step-text">Write about an embarrassing memory</div>
+                </div>
+                <div class="journey-step">
+                    <div class="step-icon">🫁</div>
+                    <div class="step-text">Process it through breathing and eye movements (or skip ahead)</div>
+                </div>
+                <div class="journey-step">
+                    <div class="step-icon">💝</div>
+                    <div class="step-text">Practice self-compassion using phrases, visualization, or body-based techniques</div>
+                </div>
+                <div class="journey-step">
+                    <div class="step-icon">💌</div>
+                    <div class="step-text">Write yourself a love letter</div>
+                </div>
+            </div>
+            <p>You have complete flexibility to move at your own pace and use the approaches that feel most natural to you. This is your safe space for healing.</p>
+            <button onclick="nextStep()" class="primary-button">Begin Your Journey</button>
+        </div>
+
+        <!-- Step 1: Memory Writing -->
+        <div class="step" id="step-1">
+            <h2>Step 1: Memory Reflection</h2>
+            <p>Think of an embarrassing or cringe-worthy memory. Write about it here. Remember, this is private and for your healing only.</p>
+            <textarea id="memoryText" placeholder="Describe the memory that makes you cringe or feel embarrassed...
+
+Take your time. There's no rush, no judgment - just gentle exploration of this experience that's part of your human story."></textarea>
+            <p><small>💝 <strong>Gentle reminder:</strong> It's okay if this feels uncomfortable - that's normal and part of the process. You're being brave by facing this with compassion.</small></p>
+            <button onclick="validateAndContinue('memory')" class="primary-button">Continue to Processing</button>
+        </div>
+
+        <!-- Step 2: Bilateral Processing -->
+        <div class="step" id="step-2">
+            <h2>Step 2: Memory Processing</h2>
+            <p>Now we'll process this memory. Hold it gently in your mind while following the breathing and eye movement instructions.</p>
+            
+            <div class="breathing-container">
+                <div class="breath-circle" id="breathCircle">
+                    <span id="breathText">Breathe</span>
+                </div>
+                
+                <div class="eye-direction" id="eyeDirection">Look Forward</div>
+                
+                <div class="breath-counter" id="breathCounter">Breath 1 of 25</div>
+                
+                <p id="processingInstructions">Hold your memory gently in mind. Let it be there without fighting it.</p>
+            </div>
+            
+            <button id="startProcessing" onclick="startProcessing()">Start Processing</button>
+            <button id="skipAhead" onclick="nextStep()" class="secondary-button">Skip to Self-Compassion</button>
+            <button id="skipProcessing" onclick="nextStep()" style="display:none;">Continue to Self-Compassion</button>
+        </div>
+
+        <!-- Step 3: Self-Compassion Meditation -->
+        <div class="step" id="step-3">
+            <h2>Step 3: Self-Compassion Practice</h2>
+            <p>Now we'll cultivate genuine self-compassion using three different approaches. Feel free to adjust your posture for comfort - this practice benefits from physical ease.</p>
+            
+            <div class="approach-selector">
+                <button class="approach-btn active" onclick="selectApproach('phrases')">Phrases</button>
+                <button class="approach-btn" onclick="selectApproach('visualization')">Visualization</button>
+                <button class="approach-btn" onclick="selectApproach('body')">Body-Based</button>
+            </div>
+            
+            <!-- Phrases Approach -->
+            <div class="approach-content active" id="phrases-approach">
+                <p><strong>Instructions:</strong> First, let your awareness fill your whole body like inflating a balloon with gentle attention. Feel your natural vitality and life force. You deserve kindness - nothing needs to be achieved or perfected to merit this care.</p>
+                
+                <div class="phrase-customizer">
+                    <p>Choose phrases that feel meaningful to you:</p>
+                    <select id="phrase1">
+                        <option value="May I be safe and protected">May I be safe and protected</option>
+                        <option value="May I be free from harm">May I be free from harm</option>
+                        <option value="May I be held in safety">May I be held in safety</option>
+                    </select>
+                    
+                    <select id="phrase2">
+                        <option value="May I be filled with happiness">May I be filled with happiness</option>
+                        <option value="May I be filled with joy">May I be filled with joy</option>
+                        <option value="May I experience well-being">May I experience well-being</option>
+                    </select>
+                    
+                    <select id="phrase3">
+                        <option value="May I be peaceful">May I be peaceful</option>
+                        <option value="May I be at peace">May I be at peace</option>
+                        <option value="May I find inner calm">May I find inner calm</option>
+                    </select>
+                    
+                    <select id="phrase4">
+                        <option value="May I live with ease and kindness">May I live with ease and kindness</option>
+                        <option value="May I live with grace">May I live with grace</option>
+                        <option value="May I move through life with ease">May I move through life with ease</option>
+                    </select>
+                </div>
+                
+                <div class="meditation-text" id="meditationText">
+                    <div id="currentPhrase">May I be safe and protected</div>
+                </div>
+                
+                <p><small>Let each phrase be like gentle waves touching the shore of your being. Don't force feelings - simply plant these seeds of intention with faith in their natural growth.</small></p>
+                
+                <button id="startPhrases" onclick="startPhrasePractice()">Begin Phrase Practice</button>
+                <button id="pausePhrases" onclick="pausePhrasePractice()" style="display:none;">Pause</button>
+            </div>
+            
+            <!-- Visualization Approach -->
+            <div class="approach-content" id="visualization-approach">
+                <p><strong>Instructions:</strong> Maintain gentle whole-body awareness while imagining yourself held in healing light. Keep imagery simple and helpful rather than elaborate.</p>
+                
+                <div class="visualization-options">
+                    <label><input type="radio" name="viz" value="golden-sphere" checked> Surrounded by a sphere of golden-white healing light</label><br>
+                    <label><input type="radio" name="viz" value="radiant-heart"> A radiant jewel of compassion glowing in your heart center</label><br>
+                    <label><input type="radio" name="viz" value="warm-embrace"> Wrapped in a warm, soft embrace of loving energy</label><br>
+                    <label><input type="radio" name="viz" value="gentle-rain"> Gentle rain of kindness falling over your entire being</label>
+                </div>
+                
+                <div class="meditation-text">
+                    <div id="vizInstructions">See yourself completely held and pervaded by golden-white light that brings comfort, healing, and ease to every part of your being.</div>
+                </div>
+                
+                <p><small>If visual clarity doesn't come easily, that's perfectly fine. Even a simple sense of light or warmth is enough.</small></p>
+            </div>
+            
+            <!-- Body-Based Approach -->
+            <div class="approach-content" id="body-approach">
+                <p><strong>Instructions:</strong> Feel or imagine warmth, softness, and care radiating from your body's energy field. Let this caring energy suffuse your entire being.</p>
+                
+                <div class="meditation-text">
+                    <div id="bodyInstructions">Feel gentle warmth spreading from your heart center throughout your whole body. Let this energy of self-care permeate every cell, every fiber of your being. You are worthy of this tender attention.</div>
+                </div>
+                
+                <p><small>Focus on the felt sense of care and tenderness in your body. This embodied kindness is the foundation of all compassion.</small></p>
+            </div>
+            
+            <div class="practice-timer">
+                <p>Practice for: <span id="practiceTime">5:00</span></p>
+                <button id="startCompassion" onclick="startCompassionPractice()">Begin Practice</button>
+                <button id="endEarly" onclick="nextStep()" style="display:none;">Continue to Love Letter</button>
+            </div>
+        </div>
+
+        <!-- Step 4: Love Letter -->
+        <div class="step" id="step-4">
+            <h2>Step 4: Letter of Self-Love</h2>
+            <p>Finally, write yourself a love letter. Acknowledge your humanity, your growth, and your worthiness of love and compassion.</p>
+            
+            <div class="love-letter">
+                <p><strong>💌 Writing prompts to inspire you:</strong></p>
+                <ul style="text-align: left; margin: 15px 0; color: #4a5568;">
+                    <li>What would you say to a dear friend going through the same experience?</li>
+                    <li>What are you proud of about how you've handled challenges?</li>
+                    <li>What makes you uniquely worthy of love and compassion?</li>
+                    <li>How have you grown from difficult experiences?</li>
+                </ul>
+                
+                <textarea id="loveLetter" placeholder="Dear [Your Name],
+
+I want you to know that you are worthy of love and compassion, exactly as you are. Everyone makes mistakes and has embarrassing moments - they're part of being beautifully, perfectly human.
+
+I see your courage in facing difficult emotions today. I see your commitment to growth and healing. You are...
+
+[Write from your heart about your inherent worth, your resilience, and your capacity for growth.]
+
+With all my love,
+[Your Name]"></textarea>
+            </div>
+            
+            <button onclick="validateAndComplete()" class="primary-button">Complete Your Journey</button>
+        </div>
+
+        <!-- Step 5: Completion -->
+        <div class="step" id="step-5">
+            <div class="completion-celebration">
+                <h2>✨ Journey Complete ✨</h2>
+                <div class="celebration-message">
+                    <p>🌟 <strong>Congratulations on completing this healing journey.</strong> You've shown tremendous courage in facing difficult emotions and practicing self-compassion.</p>
+                </div>
+            </div>
+            
+            <div class="key-reminders">
+                <h3>💝 Remember these truths:</h3>
+                <div class="reminder-cards">
+                    <div class="reminder-card">
+                        <div class="reminder-icon">🌱</div>
+                        <div class="reminder-text">Your worth isn't defined by your mistakes</div>
+                    </div>
+                    <div class="reminder-card">
+                        <div class="reminder-icon">💪</div>
+                        <div class="reminder-text">Self-compassion is a practice - be patient with yourself</div>
+                    </div>
+                    <div class="reminder-card">
+                        <div class="reminder-icon">🔄</div>
+                        <div class="reminder-text">You can return to this process anytime you need it</div>
+                    </div>
+                </div>
+            </div>
+            
+            <p>Consider saving your love letter somewhere you can read it when you need a reminder of your inherent worth.</p>
+            
+            <div class="final-actions">
+                <button onclick="downloadLetter()" class="primary-button">💾 Save Love Letter</button>
+                <button onclick="restartJourney()" class="secondary-button">🔄 Begin New Journey</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentStep = 0;
+        let breathCount = 0;
+        let processingInterval;
+        let phraseInterval;
+        let compassionTimer;
+        let compassionTimeLeft = 300; // 5 minutes
+
+        // Fixed nextStep function to handle all transitions
+        function nextStep() {
+            if (currentStep < 5) { // Changed from 4 to 5 to allow transition to step 5
+                // Hide current step
+                document.getElementById(`step-${currentStep}`).classList.remove('active');
+                
+                // Update progress
+                document.querySelector(`[data-step="${currentStep}"]`).classList.remove('active');
+                document.querySelector(`[data-step="${currentStep}"]`).classList.add('completed');
+                
+                currentStep++;
+                
+                // Show next step
+                document.getElementById(`step-${currentStep}`).classList.add('active');
+                
+                // Only update step indicator if not going to final step
+                if (currentStep < 5) {
+                    document.querySelector(`[data-step="${currentStep}"]`).classList.add('active');
+                }
+                
+                // Update progress bar
+                const progress = ((currentStep + 1) / 5) * 100;
+                document.querySelector('.progress-fill').style.width = `${progress}%`;
+            }
+        }
+
+        // Added missing validation function
+        function validateAndContinue(type) {
+            let isValid = false;
+            let errorMessage = '';
+            
+            if (type === 'memory') {
+                const memoryText = document.getElementById('memoryText').value.trim();
+                if (memoryText.length < 10) {
+                    errorMessage = 'Please write at least a few sentences about your memory to continue.';
+                } else {
+                    isValid = true;
+                }
+            }
+            
+            // Clear any existing validation messages
+            const existingMessages = document.querySelectorAll('.validation-message');
+            existingMessages.forEach(msg => msg.remove());
+            
+            if (!isValid) {
+                showValidationMessage(errorMessage);
+            } else {
+                showSuccessMessage('Thank you for sharing. Moving to the next step.');
+                setTimeout(nextStep, 1000);
+            }
+        }
+
+        // Added missing validateAndComplete function
+        function validateAndComplete() {
+            const loveLetterText = document.getElementById('loveLetter').value.trim();
+            
+            // Clear any existing validation messages
+            const existingMessages = document.querySelectorAll('.validation-message');
+            existingMessages.forEach(msg => msg.remove());
+            
+            if (loveLetterText.length < 20) {
+                showValidationMessage('Please write a few lines in your love letter before completing the journey.');
+            } else {
+                showSuccessMessage('Beautiful letter! Completing your healing journey...');
+                setTimeout(nextStep, 1500);
+            }
+        }
+
+        // Added missing showSuccessMessage function
+        function showSuccessMessage(message) {
+            // Remove existing messages
+            const existingMessages = document.querySelectorAll('.success-message');
+            existingMessages.forEach(msg => msg.remove());
+            
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'success-message';
+            messageDiv.textContent = message;
+            
+            // Insert after the current step's main content
+            const currentStepElement = document.querySelector('.step.active');
+            const firstButton = currentStepElement.querySelector('button');
+            
+            if (firstButton) {
+                currentStepElement.insertBefore(messageDiv, firstButton);
+            } else {
+                currentStepElement.appendChild(messageDiv);
+            }
+            
+            // Auto-remove after 4 seconds
+            setTimeout(() => {
+                if (messageDiv.parentNode) {
+                    messageDiv.remove();
+                }
+            }, 4000);
+        }
+
+        // Added missing showValidationMessage function
+        function showValidationMessage(message) {
+            // Remove existing messages
+            const existingMessages = document.querySelectorAll('.validation-message');
+            existingMessages.forEach(msg => msg.remove());
+            
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'validation-message';
+            messageDiv.textContent = message;
+            
+            // Insert after the current step's main content
+            const currentStepElement = document.querySelector('.step.active');
+            const firstButton = currentStepElement.querySelector('button');
+            
+            if (firstButton) {
+                currentStepElement.insertBefore(messageDiv, firstButton);
+            } else {
+                currentStepElement.appendChild(messageDiv);
+            }
+            
+            // Auto-remove after 5 seconds
+            setTimeout(() => {
+                if (messageDiv.parentNode) {
+                    messageDiv.remove();
+                }
+            }, 5000);
+        }
+
+        function startProcessing() {
+            document.getElementById('startProcessing').style.display = 'none';
+            breathCount = 0;
+            
+            processingInterval = setInterval(() => {
+                breathCount++;
+                
+                const breathCircle = document.getElementById('breathCircle');
+                const breathText = document.getElementById('breathText');
+                const eyeDirection = document.getElementById('eyeDirection');
+                const counter = document.getElementById('breathCounter');
+                const instructions = document.getElementById('processingInstructions');
+                
+                // Update counter
+                counter.textContent = `Breath ${breathCount} of 25`;
+                
+                // Breathing cycle: inhale (4s) -> hold (2s) -> exhale (4s) -> hold (2s)
+                const cyclePosition = breathCount % 4;
+                
+                if (cyclePosition === 1) {
+                    // Inhale + look right
+                    breathCircle.className = 'breath-circle inhale';
+                    breathText.textContent = 'Inhale';
+                    eyeDirection.textContent = 'Look Right →';
+                    instructions.textContent = 'Breathe in slowly while looking to the right. Hold the memory gently.';
+                } else if (cyclePosition === 2) {
+                    // Hold
+                    breathCircle.className = 'breath-circle';
+                    breathText.textContent = 'Hold';
+                    eyeDirection.textContent = 'Center';
+                } else if (cyclePosition === 3) {
+                    // Exhale + look left  
+                    breathCircle.className = 'breath-circle exhale';
+                    breathText.textContent = 'Exhale';
+                    eyeDirection.textContent = '← Look Left';
+                    instructions.textContent = 'Breathe out slowly while looking to the left. Let the memory dissolve.';
+                } else {
+                    // Hold
+                    breathCircle.className = 'breath-circle';
+                    breathText.textContent = 'Hold';
+                    eyeDirection.textContent = 'Center';
+                }
+                
+                // Every 5 breaths, give encouragement
+                if (breathCount % 5 === 0 && breathCount < 25) {
+                    instructions.textContent = `You're doing great. ${25 - breathCount} breaths remaining. Let the memory soften.`;
+                }
+                
+                if (breathCount >= 25) {
+                    clearInterval(processingInterval);
+                    breathCircle.className = 'breath-circle';
+                    breathText.textContent = 'Complete';
+                    eyeDirection.textContent = 'Well Done';
+                    instructions.textContent = 'Processing complete. Notice how the memory feels now - perhaps softer, more distant.';
+                    document.getElementById('skipProcessing').style.display = 'inline-block';
+                    document.getElementById('skipProcessing').textContent = 'Continue to Self-Compassion';
+                }
+            }, 3000); // 3 seconds per breath cycle
+        }
+
+        function restartJourney() {
+            currentStep = 0;
+            breathCount = 0;
+            
+            // Clear any running intervals
+            clearInterval(processingInterval);
+            clearInterval(phraseInterval);
+            clearInterval(compassionTimer);
+            
+            // Reset compassion practice
+            compassionTimeLeft = 300;
+            document.getElementById('practiceTime').textContent = '5:00';
+            
+            // Reset all steps
+            document.querySelectorAll('.step').forEach(step => step.classList.remove('active'));
+            document.getElementById('step-0').classList.add('active');
+            
+            // Reset progress indicators
+            document.querySelectorAll('.step-dot').forEach(dot => {
+                dot.classList.remove('active', 'completed');
+            });
+            document.querySelector('[data-step="0"]').classList.add('active');
+            
+            // Reset progress bar
+            document.querySelector('.progress-fill').style.width = '20%';
+            
+            // Clear form data
+            document.getElementById('memoryText').value = '';
+            document.getElementById('loveLetter').value = '';
+            
+            // Reset processing UI
+            document.getElementById('startProcessing').style.display = 'inline-block';
+            document.getElementById('skipProcessing').style.display = 'none';
+            
+            // Reset self-compassion UI
+            document.getElementById('startPhrases').style.display = 'inline-block';
+            document.getElementById('startPhrases').textContent = 'Begin Phrase Practice';
+            document.getElementById('pausePhrases').style.display = 'none';
+            document.getElementById('startCompassion').style.display = 'inline-block';
+            document.getElementById('endEarly').style.display = 'none';
+            document.getElementById('endEarly').textContent = 'Continue to Love Letter';
+            
+            // Reset approach selector
+            document.querySelectorAll('.approach-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelector('.approach-btn').classList.add('active');
+            document.querySelectorAll('.approach-content').forEach(content => content.classList.remove('active'));
+            document.getElementById('phrases-approach').classList.add('active');
+            
+            // Clear any validation/success messages
+            document.querySelectorAll('.validation-message, .success-message').forEach(msg => msg.remove());
+        }
+
+        function downloadLetter() {
+            const letterText = document.getElementById('loveLetter').value;
+            if (letterText.trim()) {
+                const blob = new Blob([letterText], { type: 'text/plain' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'my-love-letter.txt';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                
+                showSuccessMessage('Love letter saved successfully! 💝');
+            } else {
+                showValidationMessage('Please write your love letter before saving.');
+            }
+        }
+
+        // Self-Compassion Practice Functions
+        function selectApproach(approach) {
+            // Update button states
+            document.querySelectorAll('.approach-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Show selected approach content
+            document.querySelectorAll('.approach-content').forEach(content => content.classList.remove('active'));
+            document.getElementById(`${approach}-approach`).classList.add('active');
+            
+            // Update visualization instructions based on radio selection
+            if (approach === 'visualization') {
+                updateVisualizationInstructions();
+                // Add event listeners to radio buttons
+                document.querySelectorAll('input[name="viz"]').forEach(radio => {
+                    radio.addEventListener('change', updateVisualizationInstructions);
+                });
+            }
+        }
+        
+        function updateVisualizationInstructions() {
+            const selected = document.querySelector('input[name="viz"]:checked').value;
+            const instructions = document.getElementById('vizInstructions');
+            
+            switch(selected) {
+                case 'golden-sphere':
+                    instructions.textContent = 'See yourself completely held and pervaded by golden-white light that brings comfort, healing, and ease to every part of your being.';
+                    break;
+                case 'radiant-heart':
+                    instructions.textContent = 'Imagine a radiant jewel of compassion glowing in your heart center, emanating warmth and care throughout your entire body and being.';
+                    break;
+                case 'warm-embrace':
+                    instructions.textContent = 'Feel yourself wrapped in the warmest, softest embrace of loving energy, as if the universe itself is holding you with infinite tenderness.';
+                    break;
+                case 'gentle-rain':
+                    instructions.textContent = 'Gentle rain of kindness and care is falling over your entire being, each drop carrying healing and compassion into every part of you.';
+                    break;
+            }
+        }
+        
+        function startPhrasePractice() {
+            const button = document.getElementById('startPhrases');
+            button.classList.add('loading');
+            button.disabled = true;
+            
+            setTimeout(() => {
+                button.style.display = 'none';
+                document.getElementById('pausePhrases').style.display = 'inline-block';
+                
+                let currentPhraseIndex = 0;
+                const phrases = [
+                    document.getElementById('phrase1').value,
+                    document.getElementById('phrase2').value,
+                    document.getElementById('phrase3').value,
+                    document.getElementById('phrase4').value
+                ];
+                
+                function cyclePhrase() {
+                    const phraseElement = document.getElementById('currentPhrase');
+                    
+                    // Fade out
+                    phraseElement.style.opacity = '0.3';
+                    phraseElement.style.transform = 'scale(0.95)';
+                    
+                    setTimeout(() => {
+                        phraseElement.textContent = phrases[currentPhraseIndex];
+                        // Fade in
+                        phraseElement.style.opacity = '1';
+                        phraseElement.style.transform = 'scale(1)';
+                        currentPhraseIndex = (currentPhraseIndex + 1) % phrases.length;
+                    }, 300);
+                }
+                
+                cyclePhrase(); // Start immediately
+                phraseInterval = setInterval(cyclePhrase, 8000); // Change every 8 seconds
+                
+                showSuccessMessage('Phrase practice started. Let each phrase touch your heart gently.');
+            }, 500);
+        }
+        
+        function pausePhrasePractice() {
+            clearInterval(phraseInterval);
+            const startBtn = document.getElementById('startPhrases');
+            const pauseBtn = document.getElementById('pausePhrases');
+            
+            startBtn.style.display = 'inline-block';
+            pauseBtn.style.display = 'none';
+            startBtn.textContent = 'Resume Phrases';
+            startBtn.classList.remove('loading');
+            startBtn.disabled = false;
+            
+            showSuccessMessage('Practice paused. Take a moment to notice how you feel.');
+        }
+        
+        function startCompassionPractice() {
+            const button = document.getElementById('startCompassion');
+            button.classList.add('loading');
+            button.disabled = true;
+            button.textContent = 'Preparing...';
+            
+            setTimeout(() => {
+                button.style.display = 'none';
+                document.getElementById('endEarly').style.display = 'inline-block';
+                
+                compassionTimer = setInterval(() => {
+                    compassionTimeLeft--;
+                    const minutes = Math.floor(compassionTimeLeft / 60);
+                    const seconds = compassionTimeLeft % 60;
+                    const timeDisplay = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+                    document.getElementById('practiceTime').textContent = timeDisplay;
+                    
+                    // Add gentle encouragement at certain intervals
+                    if (compassionTimeLeft === 240) { // 4 minutes left
+                        showSuccessMessage('You\'re doing beautifully. One minute in!');
+                    } else if (compassionTimeLeft === 180) { // 3 minutes left
+                        showSuccessMessage('Halfway there. Notice the warmth growing in your heart.');
+                    } else if (compassionTimeLeft === 60) { // 1 minute left
+                        showSuccessMessage('One minute remaining. You\'re giving yourself a precious gift.');
+                    }
+                    
+                    if (compassionTimeLeft <= 0) {
+                        clearInterval(compassionTimer);
+                        document.getElementById('practiceTime').textContent = '✨ Complete! ✨';
+                        document.getElementById('endEarly').textContent = 'Continue to Love Letter';
+                        document.getElementById('endEarly').classList.add('primary-button');
+                        
+                        showSuccessMessage('Beautiful! You\'ve completed 5 minutes of self-compassion practice.');
+                        
+                        // Auto-advance after showing completion
+                        setTimeout(() => {
+                            nextStep();
+                        }, 3000);
+                    }
+                }, 1000);
+                
+                showSuccessMessage('5-minute self-compassion practice started. Be gentle with yourself.');
+            }, 1000);
+        }
+
+        // Initialize visualization instructions on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            updateVisualizationInstructions();
+        });
+    </script>
+</body>
+</html>
